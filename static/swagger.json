@@ -10,7 +10,7 @@
         "tags": [
           "Website Scrapper"
         ],
-        "summary": "Analyse All Review's from .csv files.",
+        "summary": "Website Data Extraction.",
         "consumes": [
           "application/json"
         ],
@@ -46,7 +46,7 @@
         "tags": [
           "Website Scrapper"
         ],
-        "summary": "Analyse All Review's from .csv files.",
+        "summary": "Web Profile Information Extraction.",
         "consumes": [
           "application/json"
         ],
@@ -82,7 +82,7 @@
         "tags": [
           "PDF Scrapper"
         ],
-        "summary": "Analyse All Review's from .csv files.",
+        "summary": "PDFs Document Processing.",
         "requestBody": {
           "required": true,
           "content": {

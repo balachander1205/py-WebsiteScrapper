@@ -34,7 +34,7 @@ def extract_emails_from_pdf(pdf_path):
 if __name__ == "__main__":
     #website_url = 'https://www.preprints.org/subject/browse/biology-and-life-sciences?id=16&name=Biology+and+Life+Sciences'
     website_url = 'https://www.biorxiv.org/collection/biochemistry'
-    pdf_file_path = 'D:/Projects/Freelance/py-EmailExtractor/data/preprints202504.0818.v1.pdf'
+    pdf_file_path = 'D:/Projects/Freelance/py-WebsiteScrapper-2/data/preprints202504.0818.v1.pdf'
 
     # print("Emails from website:")
     # print(extract_emails_from_website(website_url))
