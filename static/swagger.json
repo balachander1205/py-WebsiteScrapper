@@ -1,0 +1,148 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Access API",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/api/web/scrapper": {
+      "post": {
+        "tags": [
+          "Website Scrapper"
+        ],
+        "summary": "Analyse All Review's from .csv files.",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "access data",
+            "in": "body",
+            "description": "JSON data for the api",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/webScrapperRequestSchema"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/webScrapperResponseSchema"
+            }
+          },
+          "400": {
+            "description": "Invalid request data"
+          }
+        }
+      }
+    },
+    "/api/web/scrapper/profiles": {
+      "post": {
+        "tags": [
+          "Website Scrapper"
+        ],
+        "summary": "Analyse All Review's from .csv files.",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "access data",
+            "in": "body",
+            "description": "JSON data for the api",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/webScrapperRequestSchema"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/webScrapperResponseSchema"
+            }
+          },
+          "400": {
+            "description": "Invalid request data"
+          }
+        }
+      }
+    },
+    "/api/pdf/scrapper": {
+      "post": {
+        "tags": [
+          "PDF Scrapper"
+        ],
+        "summary": "Analyse All Review's from .csv files.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "base64"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ValidateResponse"
+            }
+          },
+          "404": {
+            "description": "NOT FOUND",
+            "schema": {
+              "$ref": "#/definitions/ValidateResponse"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "webScrapperRequestSchema": {
+      "type": "object",
+      "properties": {
+        "link": {
+          "type": "string"
+        }
+      }
+    },
+    "webScrapperResponseSchema": {
+      "type": "object",
+      "properties": {
+        "link": {
+          "type": "string"
+        }
+      }
+    },
+    "ValidateResponse": {
+      "type": "object",
+      "properties": {
+        "green": {
+          "type": "string"
+        },
+        "red": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
