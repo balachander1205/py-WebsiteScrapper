@@ -295,4 +295,4 @@ def parse_table_data(url):
 # url = "https://www.philosophie.lmu.de/en/directory-of-persons/"
 # url = "https://www.tmd.ac.jp/english/hpha/staff/"
 # parse_table_data(url)
-web_scrapper(url)
+# web_scrapper(url)

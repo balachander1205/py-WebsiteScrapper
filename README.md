@@ -10,8 +10,11 @@ pip install urllib
 pip install pandas  
 
 After successful installation of python and libraries.
+
 ### Start application by running below command.
 python app.py
+![Alt text](https://raw.githubusercontent.com/balachander1205/py-WebsiteScrapper/master/image2.png) 
+
 ### Open below link in browser for swagger.
 http://127.0.0.1:5001/swagger
 ![Alt text](https://raw.githubusercontent.com/balachander1205/py-WebsiteScrapper/master/image1.png)
