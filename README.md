@@ -12,7 +12,7 @@ pip install pandas
 After successful installation of python and libraries.
 
 ### Start application by running below command.
-python app.py
+python app.py  
 ![Alt text](https://raw.githubusercontent.com/balachander1205/py-WebsiteScrapper/master/image2.png) 
 
 ### Open below link in browser for swagger.
