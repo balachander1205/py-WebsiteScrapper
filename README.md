@@ -2,12 +2,19 @@
 
 ### install python version >3
 pip install logging
+##
 pip install flask
+##
 pip install requests
+##
 pip install PyPDF2
+##
 pip install beautifulsoup4
+##
 pip install urllib
+##
 pip install pandas
+##
 
 After successful installation of python and libraries.
 ### Start application by running below command.
