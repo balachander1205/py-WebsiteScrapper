@@ -28,4 +28,7 @@ Websited with table data as show below, use below API for profile data extractio
 ![Alt text](https://raw.githubusercontent.com/balachander1205/py-WebsiteScrapper/master/image3.png)  
 
 ###  Below is the sample response for profiles.
-![Alt text](https://raw.githubusercontent.com/balachander1205/py-WebsiteScrapper/master/image4.png)
+![Alt text](https://raw.githubusercontent.com/balachander1205/py-WebsiteScrapper/master/image4.png)  
+
+### Sample Response
+![Alt text](https://raw.githubusercontent.com/balachander1205/py-WebsiteScrapper/master/image6.png)  
