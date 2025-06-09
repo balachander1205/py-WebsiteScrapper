@@ -23,6 +23,9 @@ http://127.0.0.1:5001/swagger
 Use below API to extract author, emial, contact, department, country etc from website.  
 ![Alt text](https://raw.githubusercontent.com/balachander1205/py-WebsiteScrapper/master/image5.png)  
 
+### Sample Response
+![Alt text](https://raw.githubusercontent.com/balachander1205/py-WebsiteScrapper/master/image7.png)   
+
 ###  
 Websited with table data as show below, use below API for profile data extraction.  
 ![Alt text](https://raw.githubusercontent.com/balachander1205/py-WebsiteScrapper/master/image3.png)  
