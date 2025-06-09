@@ -204,9 +204,13 @@ def get_data(links_filtered):
                 _phone_number_ = extract_phone_number(link)
                 _department_ = extract_department(link)
                 _country_ = extract_country(link)
-                print('Title:  |'+str(_heading_))
-                print('Emails: |'+str(_emails_))
-                print('Author: |'+str(_author_))
+                print('Title:       |'+str(_heading_))
+                print('Emails:      |'+str(_emails_))
+                print('Author:      |'+str(_author_))
+                print('description: |'+str(_description_))
+                print('phone_number:|'+str(_phone_number_))
+                print('department:  |'+str(_department_))
+                print('country:     |'+str(_country_))
                 if len(_emails_)>0 and len(_author_)>0:
                     print('Website:|'+link)
                     # print('Title:  |'+max(_heading_, key=len))
@@ -291,4 +295,4 @@ def parse_table_data(url):
 # url = "https://www.philosophie.lmu.de/en/directory-of-persons/"
 # url = "https://www.tmd.ac.jp/english/hpha/staff/"
 # parse_table_data(url)
-# web_scrapper(url)
+web_scrapper(url)
