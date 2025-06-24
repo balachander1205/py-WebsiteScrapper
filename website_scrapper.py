@@ -7,15 +7,6 @@ import pandas as pd
 # Regex pattern for email addresses
 EMAIL_REGEX = r'[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}'
 
-# Replace with the URL of the webpage you want to scrape
-# url = 'https://www.preprints.org/subject/browse/biology-and-life-sciences?id=16&name=Biology+and+Life+Sciences'
-# url = 'https://www.biorxiv.org/collection/biochemistry'
-# url = 'https://guides.lib.lsu.edu/c.php?g=962078&p=6948257'
-# url = 'https://www.tmd.ac.jp/english/hpha/staff/'  - table data
-# url = 'https://www.tus.ac.jp/en/labo/research_field/list.html?q=Biology'
-# url = "https://crukcambridgecentre.org.uk/users/sujath-abbas"
-url = "https://www.southampton.ac.uk/people/5x82lq/doctor-adriana-wilde"
-
 def decompose_unwanted(soup):
     # Remove unwanted sections (header, footer, side menus)
     for tag in soup.find_all(['header', 'footer', 'nav', 'aside']):
@@ -130,7 +121,8 @@ def extract_department(url):
         _headers_ = soup.find_all('meta', attrs={'name': 'schoool'}) +\
                     soup.find_all('meta', attrs={'name': 'school_metatag'}) +\
                     soup.find_all('meta', attrs={'name': 'department'}) +\
-                    soup.find_all('meta', attrs={'name': 'faculty_metatag'})
+                    soup.find_all('meta', attrs={'name': 'faculty_metatag'}) +\
+                    soup.find_all('meta', attrs={'name': 'citation_author_institution'})
         header = [meta.get('content') for meta in _headers_ if meta.get('content')]
         return header
     except Exception as e:
@@ -194,8 +186,9 @@ def get_data(links_filtered):
     _response_data_ = []
     print('Inside get_data..')
     try:
+        i = 0
         for link in links_filtered:
-            print("Link="+link)
+            print("Link="+str(i)+"--"+link)
             if(isValidURL(link)):
                 _heading_ = get_page_title(link)
                 _emails_ = extract_emails_from_source(link)
@@ -211,7 +204,7 @@ def get_data(links_filtered):
                 print('phone_number:|'+str(_phone_number_))
                 print('department:  |'+str(_department_))
                 print('country:     |'+str(_country_))
-                if len(_emails_)>0 and len(_author_)>0:
+                if len(_emails_)>0 or len(_author_)>0:
                     print('Website:|'+link)
                     # print('Title:  |'+max(_heading_, key=len))
                     data = {
@@ -223,12 +216,16 @@ def get_data(links_filtered):
                         "phone":_phone_number_,
                         "department":_department_
                     }
-                    if len(_emails_)>0 and len(_heading_)>0:
-                        _response_data_.append(data)
-                        print('Title:  |'+str(_heading_))
-                        print('Emails: |'+str(_emails_))
-                        print('Author: |'+str(_author_))
-                    print('---------------------------')
+                    _response_data_.append(data)
+                    # print('Title:  |'+str(_heading_))
+                    # print('Emails: |'+str(_emails_))
+                    # print('Author: |'+str(_author_))
+                    # print('description: |'+str(_description_))
+                    # print('phone_number:|'+str(_phone_number_))
+                    # print('department:  |'+str(_department_))
+                    # print('country:     |'+str(_country_))
+                print('---------------------------')
+                i=i+1
         # unique_data = [dict(t) for t in {tuple(sorted(d.items())) for d in _response_data_}]
         print(_response_data_)
     except Exception as e:
@@ -254,8 +251,10 @@ def web_scrapper(url):
     links_filtered.append(url)
     # Extract and print the href attribute of each link
     for link in links:
-        if link['href'] == '/' or 'http://' in link['href'] or 'https://' in link['href'] or link['href'].endswith('/'): 
+        if link['href'] == '/': 
             continue
+        if 'http://' in link['href'] or 'https://' in link['href']:
+            links_filtered.append(str(link['href']))
         else:
             link_final = str(hostname) + str(link['href'])
             if len(link['href'])>1 and str(link['href']).startswith('/'):
@@ -263,19 +262,26 @@ def web_scrapper(url):
             else:
                 link_final = str(url) + str(link['href'])
             # print(link_final)
-            links_filtered.append(link_final)
-    print(links_filtered)
-    _response_data_ = get_data(links_filtered)
+            if link_final in links_filtered:
+                continue
+            else:
+                links_filtered.append(link_final)
+    print("Total Links="+str(len(links_filtered)))
+    unique_url_list = list(set(links_filtered))
+    print("Links="+str(unique_url_list))
+    _response_data_ = get_data(unique_url_list)
     return _response_data_
 
 def parse_table_data(url):
     _response_data_ = []
     try:
         response = requests.get(url)
+        print(response)
         soup = BeautifulSoup(response.text, 'html.parser')
         decompose_unwanted(soup)
         staff_data = []
         tables = soup.find_all('table')
+        print(tables)
         for table in tables:
             headers = table.find_all('th')
             rows = table.find_all('tr')
@@ -292,7 +298,21 @@ def parse_table_data(url):
         print("Xception: parse_table_data="+e)
     return _response_data_
 
+# Replace with the URL of the webpage you want to scrape
+# url = 'https://www.preprints.org/subject/browse/biology-and-life-sciences?id=16&name=Biology+and+Life+Sciences'
+# url = 'https://www.biorxiv.org/collection/biochemistry'
+# url = 'https://guides.lib.lsu.edu/c.php?g=962078&p=6948257'
+# url = 'https://www.tmd.ac.jp/english/hpha/staff/'  - table data
+# url = 'https://www.tus.ac.jp/en/labo/research_field/list.html?q=Biology'
+# url = "https://crukcambridgecentre.org.uk/users/sujath-abbas"
+# url = "https://www.southampton.ac.uk/people/5x82lq/doctor-adriana-wilde"
 # url = "https://www.philosophie.lmu.de/en/directory-of-persons/"
 # url = "https://www.tmd.ac.jp/english/hpha/staff/"
-# parse_table_data(url)
+# url = "https://chemrxiv.org/engage/chemrxiv/article-details/6843cee03ba0887c33964cbb"
+# url = "https://f1000research.com/articles/11-525"
+# url = "https://biology.ed.ac.uk/people/academic/0"
+# url = "https://ecoevorxiv.org/"
+# url = "https://www.medrxiv.org/"
+# url = "https://www.biorxiv.org/"
 # web_scrapper(url)
+# parse_table_data(url)
