@@ -12,20 +12,29 @@ def extract_emails_from_text(text):
 
 # ---------Extract emails from PDF ---------
 def extract_emails_from_pdf(pdf_path):
+    _response_data_ = []
     emails = []
+    descripsion = []
     try:
         with open(pdf_path, 'rb') as file:
             reader = PyPDF2.PdfReader(file)
+            page_0 = reader.pages[0]
             document_info = reader.metadata
-            print(document_info)
+            # print(document_info)
             title = document_info.title
-            print(title)
+            # print(title)
+            descripsion.append(page_0.extract_text())
             for page in reader.pages:
                 text = page.extract_text()
                 # print(text)
                 if text:
                     emails.extend(extract_emails_from_text(text))
-        return list(set(emails))
+            data = {
+                "emails": list(set(emails)),
+                "description": descripsion
+            }
+            print(data)
+        return _response_data_.append(data)
     except Exception as e:
         print(f"Error reading PDF: {e}")
         return []
