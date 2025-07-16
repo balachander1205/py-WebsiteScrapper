@@ -3,6 +3,7 @@ from flask import Flask,render_template, request,json,Response
 from flask_swagger_ui import get_swaggerui_blueprint
 from flask_cors import CORS, cross_origin
 from website_scrapper import web_scrapper, parse_table_data
+from pdf_file_downloader import download_pdfs_from_page
 
 app = Flask(__name__)
 CORS(app)
@@ -46,6 +47,15 @@ def profileScrapper():
     data = json.loads(request.data)
     url = data.get('link', '')
     _response_ = parse_table_data(url)
+    print(_response_) 
+    return json.dumps(_response_);
+
+@app.route('/api/web/pdf/download/scrap', methods=['POST'])    
+@cross_origin()
+def pdfDownloadScrapper():
+    data = json.loads(request.data)
+    url = data.get('link', '')
+    _response_ = download_pdfs_from_page(url)
     print(_response_) 
     return json.dumps(_response_);
 

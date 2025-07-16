@@ -77,6 +77,42 @@
         }
       }
     },
+    "/api/web/pdf/download/scrap": {
+      "post": {
+        "tags": [
+          "PDF file downloader & Scrapper"
+        ],
+        "summary": "PDF file download & scrap.",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "access data",
+            "in": "body",
+            "description": "JSON data for the api",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/webScrapperRequestSchema"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/webScrapperResponseSchema"
+            }
+          },
+          "400": {
+            "description": "Invalid request data"
+          }
+        }
+      }
+    },
     "/api/pdf/scrapper": {
       "post": {
         "tags": [
