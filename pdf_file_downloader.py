@@ -18,6 +18,7 @@ def download_pdfs_from_page(page_url, download_dir='static/pdfs/'+cur_date):
         filename = os.path.join(download_dir, pdf_url.split('/')[-1])
         try:
             pdf_response = requests.get(pdf_url)
+            print(pdf_response)
             if pdf_response.status_code == 200:
                 with open(filename, 'wb') as f:
                     f.write(pdf_response.content)
