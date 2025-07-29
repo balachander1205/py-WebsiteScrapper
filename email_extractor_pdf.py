@@ -2,6 +2,7 @@ import re
 import requests
 from bs4 import BeautifulSoup
 import PyPDF2
+import fitz
 
 # Regex pattern for email
 EMAIL_REGEX = r'[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}'
@@ -15,6 +16,7 @@ def extract_emails_from_pdf(pdf_path):
     _response_data_ = []
     emails = []
     descripsion = []
+    doc = fitz.open(pdf_path)
     try:
         with open(pdf_path, 'rb') as file:
             reader = PyPDF2.PdfReader(file)
@@ -29,15 +31,117 @@ def extract_emails_from_pdf(pdf_path):
                 # print(text)
                 if text:
                     emails.extend(extract_emails_from_text(text))
-            data = {
-                "emails": list(set(emails)),
-                "description": descripsion
-            }
-            print(data)
+        data = {
+            "emails": list(set(emails)),
+            "description": extract_abstract_paragraph(doc),
+            "title": get_title(doc),
+            "department": extract_department_text(doc)
+        }
+        print(data)
         return _response_data_.append(data)
     except Exception as e:
         print(f"Error reading PDF: {e}")
         return []
+
+# Extract pdf title
+def get_title(doc):
+    max_font_size = 0
+
+    # First pass: find the maximum font size
+    for page in doc:
+        blocks = page.get_text("dict")["blocks"]
+        for block in blocks:
+            if "lines" in block:
+                for line in block["lines"]:
+                    for span in line["spans"]:
+                        if span["text"].strip():
+                            max_font_size = max(max_font_size, span["size"])
+
+    # Second pass: collect all text with the max font size
+    large_font_texts = []
+
+    for page in doc:
+        blocks = page.get_text("dict")["blocks"]
+        for block in blocks:
+            if "lines" in block:
+                for line in block["lines"]:
+                    for span in line["spans"]:
+                        if span["size"] == max_font_size:
+                            text = span["text"].strip()
+                            if text:
+                                large_font_texts.append(text)
+
+    # Combine all large font texts into a single string
+    combined_text = " ".join(large_font_texts)
+    return combined_text
+
+# Extarct department
+def extract_department_text(doc):
+    keyword = "department"
+    matches = []
+
+    for page_num, page in enumerate(doc, start=1):
+        blocks = page.get_text("dict")["blocks"]
+        for block in blocks:
+            if "lines" in block:
+                for line in block["lines"]:
+                    full_line = " ".join(span["text"] for span in line["spans"]).strip()
+                    if keyword.lower() in full_line.lower():
+                        matches.append({
+                            "page": page_num,
+                            "text": full_line
+                        })
+
+    if matches:
+        for match in matches:
+            return match['text']
+    else:
+        return ''
+
+# Extract description from abstract string
+def extract_abstract_paragraph(doc):
+    abstract_started = False
+    abstract_lines = []
+
+    for page_num, page in enumerate(doc, start=1):
+        blocks = page.get_text("dict")["blocks"]
+        
+        for block in blocks:
+            if "lines" not in block:
+                continue
+
+            for line in block["lines"]:
+                line_text = " ".join(span["text"] for span in line["spans"]).strip()
+
+                if not line_text:
+                    continue
+
+                if not abstract_started:
+                    if line_text.lower().startswith("abstract"):
+                        abstract_started = True
+                        continue  # skip the heading itself
+                else:
+                    # Optional: stop if new heading is detected
+                    if line_text.isupper() and len(line_text.split()) <= 5:
+                        break
+                    abstract_lines.append(line_text)
+
+            if abstract_started and abstract_lines:
+                continue  # collect remaining blocks on same page
+
+        if abstract_started and abstract_lines:
+            continue  # collect across pages if needed
+    result_string = ""
+    # Output lines
+    if abstract_lines:
+        for line in abstract_lines:
+            if line.endswith('.'):
+                result_string += str(line)
+                break
+            else:
+                result_string += str(line)    
+    return result_string
+
 
 # --------- Example Usage ---------
 if __name__ == "__main__":
@@ -51,4 +155,6 @@ if __name__ == "__main__":
 
     print("\nEmails from PDF:"+pdf_file_path)
     print(extract_emails_from_pdf(pdf_file_path))
+    # extract_paragraphs(pdf_file_path)
+    # get_title(pdf_file_path)
 

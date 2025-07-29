@@ -4,12 +4,13 @@ import os
 from urllib.parse import urljoin
 from datetime import datetime
 
+headers = {"User-Agent": "Mozilla/5.0"}
 
 cur_date = datetime.today().strftime('%Y-%m-%d')
 
 def download_pdfs_from_page(page_url, download_dir='static/pdfs/'+cur_date):
     os.makedirs(download_dir, exist_ok=True)
-    response = requests.get(page_url)
+    response = requests.get(page_url, headers=headers)
     soup = BeautifulSoup(response.content, 'html.parser')
 
     pdf_links = [urljoin(page_url, link['href']) for link in soup.find_all('a', href=True) if link['href'].lower().endswith('.pdf')]
@@ -30,4 +31,4 @@ def download_pdfs_from_page(page_url, download_dir='static/pdfs/'+cur_date):
 
 # Example usage
 page_url = 'https://www.biorxiv.org/content/10.1101/2025.07.10.664210v1'
-# download_pdfs_from_page(page_url)
+download_pdfs_from_page(page_url)
