@@ -5,7 +5,7 @@ from flask_cors import CORS, cross_origin
 from website_scrapper import web_scrapper, parse_table_data
 from pdf_file_downloader import download_pdfs_from_page
 from datetime import datetime
-from email_extractor_pdf import extract_emails_from_pdf
+from email_extractor_pdf import extract_emails_from_pdf, read_all_files
 app = Flask(__name__)
 CORS(app)
 
@@ -57,11 +57,11 @@ def profileScrapper():
 def pdfDownloadScrapper():
     data = json.loads(request.data)
     url = data.get('link', '')
-    _response_ = download_pdfs_from_page(url)
-    pdf_file_path = 'static/pdfs/'+cur_date
-    _finale_data_ = extract_emails_from_pdf(pdf_file_path)
+    # _response_ = download_pdfs_from_page(url)
+    # pdf_file_path = 'static/pdfs/'+cur_date
+    _finale_data_ = read_all_files(url)
     print("_finale_data_="+str(_finale_data_)) 
-    return json.dumps(_finale_data_);
+    return _finale_data_
 
 if __name__=="__main__":
     logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG)    

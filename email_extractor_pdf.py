@@ -3,13 +3,46 @@ import requests
 from bs4 import BeautifulSoup
 import PyPDF2
 import fitz
+import os
+import csv
+from datetime import datetime
 
 # Regex pattern for email
 EMAIL_REGEX = r'[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}'
+cur_date = datetime.today().strftime('%Y-%m-%d')
+
+# Read all files in folder
+def read_all_files(folder_path):
+    data = []
+    # Loop through each file in the folder
+    for filename in os.listdir(folder_path):
+        file_path = os.path.join(folder_path, filename)
+        # Check if it's a file (not a subfolder)
+        if os.path.isfile(file_path):
+            print(file_path)
+            file_data = extract_emails_from_pdf(file_path)
+            data.append(file_data)
+    print(data)
+    write_to_file(data)
+    return 'Data file created at static/'+str(cur_date)+'.csv'
+
+def write_to_file(data):
+    # Choose CSV file name
+    csv_file = 'static/'+str(cur_date)+'.csv'
+
+    # Get the fieldnames from the keys of the first dictionary
+    fieldnames = data[0].keys()
+
+    # Write to CSV
+    with open(csv_file, 'w', newline='', encoding='utf-8') as file:
+        writer = csv.DictWriter(file, fieldnames=fieldnames)
+
+        writer.writeheader()     # Write the header row
+        writer.writerows(data)   # Write all rows
+
 
 def extract_emails_from_text(text):
     return re.findall(EMAIL_REGEX, text)
-
 
 # ---------Extract emails from PDF ---------
 def extract_emails_from_pdf(pdf_path):
@@ -37,8 +70,7 @@ def extract_emails_from_pdf(pdf_path):
             "title": get_title(doc),
             "department": extract_department_text(doc)
         }
-        print(data)
-        return _response_data_.append(data)
+        return data
     except Exception as e:
         print(f"Error reading PDF: {e}")
         return []
@@ -148,13 +180,14 @@ if __name__ == "__main__":
     #website_url = 'https://www.preprints.org/subject/browse/biology-and-life-sciences?id=16&name=Biology+and+Life+Sciences'
     website_url = 'https://www.biorxiv.org/collection/biochemistry'
     # pdf_file_path = 'D:/Projects/Freelance/py-WebsiteScrapper-2/data/preprints202504.0818.v1.pdf'
-    pdf_file_path = 'D:/Projects/Freelance/py-WebsiteScrapper/static/pdfs/2025-07-16/2025.07.10.664210v1.full.pdf'
+    pdf_file_path = 'D:/Projects/Freelance/py-WebsiteScrapper/static/pdfs/2025-07-16/'
 
     # print("Emails from website:")
     # print(extract_emails_from_website(website_url))
 
     print("\nEmails from PDF:"+pdf_file_path)
-    print(extract_emails_from_pdf(pdf_file_path))
+    # print(extract_emails_from_pdf(pdf_file_path))
     # extract_paragraphs(pdf_file_path)
     # get_title(pdf_file_path)
+    print(read_all_files(pdf_file_path))
 
