@@ -77,12 +77,12 @@
         }
       }
     },
-    "/api/web/pdf/download/scrap": {
+    "/api/pdf/scrap": {
       "post": {
         "tags": [
-          "PDF file downloader & Scrapper"
+          "PDF Scrapper"
         ],
-        "summary": "PDF file download & scrap.",
+        "summary": "PDF scrap.",
         "consumes": [
           "application/json"
         ],
@@ -109,44 +109,6 @@
           },
           "400": {
             "description": "Invalid request data"
-          }
-        }
-      }
-    },
-    "/api/pdf/scrapper": {
-      "post": {
-        "tags": [
-          "PDF Scrapper"
-        ],
-        "summary": "PDFs Document Processing.",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "multipart/form-data": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "file": {
-                    "type": "string",
-                    "format": "base64"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/ValidateResponse"
-            }
-          },
-          "404": {
-            "description": "NOT FOUND",
-            "schema": {
-              "$ref": "#/definitions/ValidateResponse"
-            }
           }
         }
       }

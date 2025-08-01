@@ -52,7 +52,7 @@ def profileScrapper():
     print(_response_) 
     return json.dumps(_response_);
 
-@app.route('/api/web/pdf/download/scrap', methods=['POST'])    
+@app.route('/api/pdf/scrap', methods=['POST'])    
 @cross_origin()
 def pdfDownloadScrapper():
     data = json.loads(request.data)

@@ -35,3 +35,16 @@ Websited with table data as show below, use below API for profile data extractio
 
 ### Sample Response
 ![Alt text](https://raw.githubusercontent.com/balachander1205/py-WebsiteScrapper/master/image6.png)  
+
+###  
+Use below API to extract author, emial, contact, department, country etc from PDF files from folder.
+Download and save all the pdf files in anf folder and give folder path as input to below API as mentioned.  
+![Alt text](https://raw.githubusercontent.com/balachander1205/py-WebsiteScrapper/master/image8.png)
+
+![Alt text](https://raw.githubusercontent.com/balachander1205/py-WebsiteScrapper/master/image9.png)
+
+![Alt text](https://raw.githubusercontent.com/balachander1205/py-WebsiteScrapper/master/image10.png)
+
+![Alt text](https://raw.githubusercontent.com/balachander1205/py-WebsiteScrapper/master/image11.png)
+
+![Alt text](https://raw.githubusercontent.com/balachander1205/py-WebsiteScrapper/master/image12.png)

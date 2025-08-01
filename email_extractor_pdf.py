@@ -9,7 +9,7 @@ from datetime import datetime
 
 # Regex pattern for email
 EMAIL_REGEX = r'[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}'
-cur_date = datetime.today().strftime('%Y-%m-%d')
+cur_date = datetime.today().strftime('%Y-%m-%d %H%M')
 
 # Read all files in folder
 def read_all_files(folder_path):
@@ -68,7 +68,8 @@ def extract_emails_from_pdf(pdf_path):
             "emails": list(set(emails)),
             "description": extract_abstract_paragraph(doc),
             "title": get_title(doc),
-            "department": extract_department_text(doc)
+            "department": extract_department_text(doc),
+            "file": pdf_path
         }
         return data
     except Exception as e:
